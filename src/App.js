@@ -1,6 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import logo from './logo.svg';
 import './App.css';
+
+const baseUrl = './components';
+const OtherComponent = lazy(() => import(`${baseUrl}/OtherComponent`));
 
 class App extends Component {
   render() {
@@ -20,6 +23,8 @@ class App extends Component {
             Learn React
           </a>
         </header>
+        <Suspense fallback={<div>Loading...</div>}><OtherComponent /></Suspense>
+        
       </div>
     );
   }
