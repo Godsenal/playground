@@ -2,12 +2,12 @@ import React, { createRef } from "react";
 import { css } from "glamor";
 import { Overlay } from ".";
 
-const yearBox = css({
+const baseYearBox = css({
   textAlign: "center",
   fontSize: 20,
   fontWeight: 600
 });
-const yearText = css({
+const baseYearText = css({
   cursor: "pointer",
   padding: 5
 });
@@ -75,11 +75,12 @@ class YearHeader extends React.PureComponent {
   };
   render() {
     const { isChanging, years } = this.state;
-    const { year } = this.props;
+    const { year, styles } = this.props;
+    const { yearBox, yearText } = styles;
     return (
       <div>
-        <div {...css(yearBox)}>
-          <span {...css(yearText)} onClick={this.setChangeMode}>
+        <div {...css(baseYearBox, yearBox)}>
+          <span {...css(baseYearText, yearText)} onClick={this.setChangeMode}>
             {year}
           </span>
         </div>

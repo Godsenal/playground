@@ -1,23 +1,24 @@
 import React from "react";
 import { css } from "glamor";
 
-const headerRowStyle = css({
+const baseDayContainer = css({
   color: "rgb(117, 117, 117)",
-  borderBottom: "1px solid rgb(117, 117, 117)"
+  borderBottom: "1px solid #ccc"
 });
-const headerStyle = css({
+const baseDayBox = css({
   fontSize: "0.7em",
   height: "1em",
   padding: 10
 });
 const DAY_OF_WEEK = ["일", "월", "화", "수", "목", "금", "토"];
 
-const WeekHeader = () => {
+const WeekHeader = ({ styles }) => {
+  const { dayContainer, dayBox, dayText } = styles;
   return (
-    <tr {...css(headerRowStyle)}>
+    <tr {...css(baseDayContainer, dayContainer)}>
       {DAY_OF_WEEK.map(day => (
-        <th {...css(headerStyle)} key={day}>
-          {day}
+        <th {...css(baseDayBox, dayBox)} key={day}>
+          <span {...css(dayText)}>{day}</span>
         </th>
       ))}
     </tr>

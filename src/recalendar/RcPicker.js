@@ -1,33 +1,33 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import baserc from './baserc';
-import { Month, PickDay } from './components';
-import { isEqual } from 'date-fns';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import baserc from "./baserc";
+import { Month, PickDay } from "./components";
+import { isEqual } from "date-fns";
 class RcPicker extends Component {
   static propTypes = {
-    onSelectDay: PropTypes.func.isRequired,
+    onSelectDate: PropTypes.func.isRequired
   };
-  onSelectDay = (day, isSelected) => {
-    const { onSelectDay } = this.props;
-    const newSelected = isSelected ? '' : day;
-    onSelectDay(newSelected);
+  onSelectDate = (date, isSelected) => {
+    const { onSelectDate } = this.props;
+    const newSelected = isSelected ? "" : date;
+    onSelectDate(newSelected);
   };
-  onMultiSelectDay = (day, isSelected) => {
-    const { selected, onSelectDay } = this.props;
+  onMultiSelectDate = (date, isSelected) => {
+    const { selected, onSelectDate } = this.props;
     const newSelected = isSelected
-      ? selected.filter(select => !isEqual(select, day))
-      : [...selected, day];
-    onSelectDay(newSelected);
+      ? selected.filter(select => !isEqual(select, date))
+      : [...selected, date];
+    onSelectDate(newSelected);
   };
   render() {
     const { multiple } = this.props;
-    const onDayClick = multiple ? this.onMultiSelectDay : this.onSelectDay;
+    const onDateClick = multiple ? this.onMultiSelectDate : this.onSelectDate;
     return (
       <Month
         {...this.props}
         Day={PickDay}
         eachDays={this.props.getCalendarMonthDays()}
-        onDayClick={onDayClick}
+        onDateClick={onDateClick}
       />
     );
   }

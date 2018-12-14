@@ -10,24 +10,24 @@ import {
 } from "date-fns";
 import { css } from "glamor";
 import { YearHeader, MonthHeader } from "./components";
-const baseStyle = css({
+const baseContainer = css({
   width: 350,
-  height: 400,
+  height: 350,
   color: "black",
   position: "relative",
-  overflowY: "auto",
-  "& table": {
-    marginTop: "0.5rem",
-    width: "100%",
-    height: "90%",
-    textAlign: "center"
-  }
+  backgroundColor: "white"
 });
 
 const baseHeader = css({
   display: "flex",
   alignItems: "center",
-  height: "5%"
+  height: "10%",
+  padding: "16px 0",
+  boxSizing: "border-box"
+});
+
+const baseBody = css({
+  height: "90%"
 });
 const baserc = Wrapped => {
   return class extends Component {
@@ -38,10 +38,12 @@ const baserc = Wrapped => {
       lastDayOfMonth: getDaysInMonth(this.props.initialDate)
     };
     static propTypes = {
-      initialDate: PropTypes.instanceOf(Date)
+      initialDate: PropTypes.instanceOf(Date),
+      styles: PropTypes.object
     };
     static defaultProps = {
-      initialDate: new Date()
+      initialDate: new Date(),
+      styles: {}
     };
     updateDate = date => {
       const year = date.getFullYear();
@@ -79,20 +81,32 @@ const baserc = Wrapped => {
     };
     render() {
       const { year, month } = this.state;
+      const { container, header } = this.props.styles;
       return (
-        <div {...css(baseStyle)}>
-          <div {...baseHeader}>
-            <YearHeader changeYear={this.changeYear} year={year} />
-            <MonthHeader changeMonth={this.changeMonth} month={month} />
+        <div {...css(baseContainer, container)}>
+          <div {...css(baseHeader, header)}>
+            <YearHeader
+              {...this.props}
+              changeYear={this.changeYear}
+              year={year}
+            />
+            <MonthHeader
+              {...this.props}
+              changeMonth={this.changeMonth}
+              month={month}
+            />
           </div>
-          <Wrapped
-            {...this.props}
-            {...this.state}
-            changeMonth={this.changeMonth}
-            changeYear={this.changeYear}
-            updateDate={this.updateDate}
-            getCalendarMonthDays={this.getCalendarMonthDays}
-          />
+
+          <div className={baseBody}>
+            <Wrapped
+              {...this.props}
+              {...this.state}
+              changeMonth={this.changeMonth}
+              changeYear={this.changeYear}
+              updateDate={this.updateDate}
+              getCalendarMonthDays={this.getCalendarMonthDays}
+            />
+          </div>
         </div>
       );
     }

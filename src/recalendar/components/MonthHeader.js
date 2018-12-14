@@ -2,12 +2,13 @@ import React from "react";
 import { css } from "glamor";
 import { Arrow, Overlay } from ".";
 
-const baseStyle = css({
+const baseMonthBox = css({
   width: "100%",
   display: "flex",
   alignItems: "center"
 });
-const baseMonth = css({
+const baseMonthText = css({
+  textAlign: "center",
   cursor: "pointer",
   flex: 1
 });
@@ -62,10 +63,11 @@ class MonthHeader extends React.PureComponent {
   };
   render() {
     const { isChanging } = this.state;
-    const { changeMonth, month } = this.props;
+    const { changeMonth, month, styles } = this.props;
+    const { monthBox, monthText } = styles;
     return (
-      <div {...css(baseStyle)}>
-        <div {...css(baseMonth)} onClick={this.setChangeMode}>
+      <div {...css(baseMonthBox, monthBox)}>
+        <div {...css(baseMonthText, monthText)} onClick={this.setChangeMode}>
           {month + 1}월
         </div>
         <button {...css(baseButton)} onClick={() => changeMonth(month - 1)}>

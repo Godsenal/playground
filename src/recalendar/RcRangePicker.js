@@ -1,47 +1,44 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import baserc from './baserc';
-import { Month, RangeDay } from './components';
-import { isAfter, eachDay, isBefore } from 'date-fns';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import baserc from "./baserc";
+import { Month, RangeDay } from "./components";
+import { isAfter, eachDay, isBefore } from "date-fns";
 class RcRangePicker extends Component {
   state = {
-    inRangeDates: [],
+    inRangeDates: []
   };
   static propTypes = {
     startDate: PropTypes.oneOfType([
       PropTypes.instanceOf(Date),
-      PropTypes.string,
+      PropTypes.string
     ]),
     endDate: PropTypes.oneOfType([
       PropTypes.instanceOf(Date),
-      PropTypes.string,
+      PropTypes.string
     ]),
-    onSelectRange: PropTypes.func.isRequired,
+    onSelectRange: PropTypes.func.isRequired
   };
-  onSelectDay = day => {
+  onSelectDate = date => {
     const { startDate, endDate } = this.props;
-    if (!startDate || isBefore(day, startDate)) {
-      this.props.onSelectRange(day, endDate);
+    if (!startDate || isBefore(date, startDate)) {
+      this.props.onSelectRange(date, endDate);
       this.setState({
-        inRangeDates: endDate ? eachDay(day, endDate) : [],
+        inRangeDates: endDate ? eachDay(date, endDate) : []
       });
-    }
-    else if (!endDate) {
-      this.props.onSelectRange(startDate, day);
+    } else if (!endDate) {
+      this.props.onSelectRange(startDate, date);
       this.setState({
-        inRangeDates: eachDay(startDate, day),
+        inRangeDates: eachDay(startDate, date)
       });
-    }
-    else if (endDate && isAfter(day, startDate)) {
-      this.props.onSelectRange(startDate, day);
+    } else if (endDate && isAfter(date, startDate)) {
+      this.props.onSelectRange(startDate, date);
       this.setState({
-        inRangeDates: eachDay(startDate, day),
+        inRangeDates: eachDay(startDate, date)
       });
-    }
-    else {
-      this.props.onSelectRange('', '');
+    } else {
+      this.props.onSelectRange("", "");
       this.setState({
-        inRangeDates: [],
+        inRangeDates: []
       });
     }
   };
@@ -53,7 +50,7 @@ class RcRangePicker extends Component {
         Day={RangeDay}
         inRangeDates={inRangeDates}
         eachDays={this.props.getCalendarMonthDays()}
-        onDayClick={this.onSelectDay}
+        onDateClick={this.onSelectDate}
       />
     );
   }

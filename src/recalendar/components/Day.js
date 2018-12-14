@@ -1,12 +1,61 @@
-import { format, getMonth } from 'date-fns';
-const Day = ({ day, dateData, month, ...props }) => {
+import React from "react";
+import { format, getMonth, getDate } from "date-fns";
+import { css } from "glamor";
+const baseDateBox = css({
+  fontSize: 14,
+  position: "relative",
+  minWidth: "2.5em",
+  minHeight: "2.5em",
+  textAlign: "center",
+  verticalAlign: "top",
+  cursor: "pointer",
+  opacity: 1,
+  transition: "opacity 0.2s"
+});
+const baseDateText = isThisMonth =>
+  css({
+    marginBottom: "0.3em",
+    cursor: "pointer",
+    color: isThisMonth ? "inherit" : "#ccc",
+    backgroundColor: "transparent",
+    outline: "none",
+    border: "none"
+  });
+const baseEventBox = css({
+  width: "100%",
+  textAlign: "center",
+  fontSize: ".8em",
+  wordBreak: "break-all"
+});
+
+const Day = ({
+  day,
+  dateData,
+  month,
+  onDateClick,
+  dateStyle, // from pick or range date
+  styles,
+  ...props
+}) => {
   const isThisMonth = getMonth(day) === month;
-  const dayData = dateData[format(day, 'YYYY-MM-DD')];
+  const dayData = dateData[format(day, "YYYY-MM-DD")];
   const events = dayData ? dayData.events : [];
+  const { dateBox, dateText, eventBox, eventText } = styles;
   // const isSelected = multiple
   //   ? selected.some(item => isEqual(day, item))
   //   : isEqual(day, selected);
-  return props.children({ isThisMonth, events, day, ...props });
+  return (
+    <td {...css(baseDateBox, dateBox, dateStyle)} onClick={onDateClick}>
+      <button {...css(baseDateText(isThisMonth), dateText)}>
+        {getDate(day)}
+      </button>
+      {events.map((event, i) => (
+        <div {...css(baseEventBox, eventBox)} key={i}>
+          <span {...css(eventText)}>{event}</span>
+        </div>
+      ))}
+    </td>
+  );
 };
 
 export default Day;
